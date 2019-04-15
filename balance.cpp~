@@ -1,0 +1,81 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cstring>
+#include <iomanip>
+using namespace std;
+
+struct PERSON{
+    char* Name;
+    float Balance;};
+
+void Display(PERSON  a[] , int N) {
+  cout << fixed << setprecision(2);
+  
+
+  cout <<setw(20)<< "Name" << setw(20)<<"Balance\n";
+  cout << "----------------------------------------\n";
+
+  for (int i = 0; i < N; i++) {
+    cout <<setw(20) << a[i].Name << setw(20) << a[i].Balance << "\n";
+  }
+}
+
+PERSON* readData(int & N) {
+ 
+  string first_name;
+  string last_name;
+  string full_name;
+  float salary;
+  PERSON *Parray = new PERSON[N];
+  ifstream inFile;
+  inFile.open("data.txt");
+  int i = 0;
+  while (inFile && i < N){
+  
+    inFile >> first_name >> last_name >> salary;
+    full_name = first_name + " " + last_name;
+    strcpy(Parray[i].Name, full_name.c_str());
+    // Parray[i].Name  = full_name;
+    Parray[i++].Balance = salary;
+  }
+
+  inFile.close();
+  
+  return Parray;
+
+}
+
+int CountData(){
+  ifstream inFile;
+  inFile.open("data.txt");
+  int count = 0;
+  string fname,lname;
+  float salary;
+  
+  while (inFile){
+    inFile >> fname >> lname >> salary;
+    inFile.ignore(256, '\n');
+    count++;
+  }
+  inFile.close();
+  return count;
+}
+
+
+int main() {
+
+  int number = CountData();
+
+  PERSON * arryptr = readData(number);
+  Display(arryptr, number);
+  delete[] arryptr;
+  
+ 
+  
+
+
+
+  return 0;
+
+}
